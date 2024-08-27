@@ -1,0 +1,36 @@
+---
+title: "Cincy vs Charleston Ratings"
+---
+
+## Is service worse in Cincinnati?
+
+```{r}
+pacman::p_load(car, # qqPlot function
+               cowplot, # apa plotting
+               tidyverse, # tidyverse goodness
+               psych, # descriptive stats
+               lm.beta # getting a standard coefficient
+               )
+city_ratings <- read.csv("Cincy hating data.csv")
+city_ratings
+```
+
+Descriptive stats:
+
+```{r}
+city_ratings %>%
+    group_by(City) %>%
+    summarise(
+        n = n(),
+        mean = mean(Rating),
+        sd = sd(Rating),
+        se = sd(Rating)/sqrt(n()),
+        var = sd(Rating)^2
+    )
+```
+
+```{r}
+t.test(data = city_ratings, Rating~City,
+       paired = FALSE,
+       var.equal = TRUE)
+```
